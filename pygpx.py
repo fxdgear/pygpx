@@ -101,7 +101,8 @@ class GPXTrack:
             if node.nodeName == "name":
                 self.name = node.firstChild.data                
             elif node.nodeName == "trkseg":
-                self.trksegs.append(GPXTrackSeg(node, self.version))
+                if node.hasChildNodes():
+                    self.trksegs.append(GPXTrackSeg(node, self.version))
             elif node.nodeName == "number":
                 self.name = node.firstChild.data                
             else:
@@ -109,7 +110,10 @@ class GPXTrack:
 
     def distance(self):
         """Return the distance for this track."""
-        return sum([trkseg.distance() for trkseg in self.trksegs])
+        try:
+            return sum([trkseg.distance() for trkseg in self.trksegs])
+        except IndexError:
+            print "emtpy track segment"
         
     def duration(self):
         """Return the duration for this track. The sum of the duration
@@ -152,13 +156,15 @@ class GPX:
         self.tracks = []
         self.gpx_hdr = self.dom.firstChild
         self.version = self.gpx_hdr.getAttribute("version")
-        if self.version == "1.1":
-            self._init_version_1_1()
+        if self.version in ["1.0", "1.1"]:
+            self._init_version()
         else:
-            raise ValueError, "Can't handle version", None
+            raise ValueError, "Can't handle version", self.version
 
-    def _init_version_1_1(self):
-        """Initialise a version 1.1 GPX instance."""
+    def _init_version(self):
+        """
+        Initalize a GPX instance.
+        """
         self.creator = self.gpx_hdr.getAttribute("creator")
         for node in self.gpx_hdr.childNodes:
             if node.nodeType != node.ELEMENT_NODE:
@@ -169,3 +175,6 @@ class GPX:
                 self.tracks.append(GPXTrack(node, self.version))
             else:
                 raise ValueError, "Can't handle node", node.nodeName
+        
+                
+    
