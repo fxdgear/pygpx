@@ -20,8 +20,8 @@ pygpx has now been converted to v0.3.
 API example:
 --------------
 
-
 ::
+
     from pygpx import GPX
     gpx = GPX("some_data.gpx")
     tracks = gpx.tracks
