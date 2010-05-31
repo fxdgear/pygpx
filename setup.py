@@ -16,7 +16,7 @@ setup (
     url = "http://www.github.com/fxdgear/pygpx",
     download_url = "http://github.com/fxdgear/pygpx/zipball/master",
     license = "http://www.opensource.org/licenses/mit-license.php",
-    py_modules = ["pygpx"],
+    py_modules = ["pygpx.pygpx"],
     platforms = ["any"],
     classifiers = ["Development Status :: 4 - Alpha",
                    "Intended Audience :: Developers",
