@@ -1,0 +1,5 @@
+v0.1 - Originally created by Ben
+v0.2 - Picked up by Nick, made some minor changes to make with GPX v1.1
+v0.3 - Switch from using Minidom to ETree
+	 - Etree allows for using schema validation
+	 - pygpx now is validates against GPX schema v1.1, please make sure you're files use v1.1 as v1.0 is no longer supported.
