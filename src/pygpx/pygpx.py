@@ -149,14 +149,13 @@ class GPX:
         Create a GPX object based on the given file descriptor.
         """
         PATH = os.path.dirname(__file__)
-        schema = os.path.join(PATH, "pygpx", "lib","gpx-1_1.xsd")
-        print schema
+        SCHEMA = os.path.join(PATH, "schema","gpx-1_1.xsd")
         self.creator = None
         self.time = None
         self.tracks = []
         self.version = ""
         self.metadata = None
-        gpx_schema_doc = etree.parse("lib/gpx-1_1.xsd")
+        gpx_schema_doc = etree.parse(SCHEMA)
         gpx_schema = etree.XMLSchema(gpx_schema_doc)
         self.gpx_doc = etree.parse(fd)
         self.root = self.gpx_doc.getroot()
