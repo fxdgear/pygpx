@@ -1,5 +1,7 @@
 This library is designed for parsing and manipulating gpx files in python.
+
 This project originally started: http://www.benno.id.au/code/pygpx/ by Ben Leslie.
+
 I've picked up this project to update it to v1.1 of GPX so I can use this project with some of my personal work.
 
 Prerequisites
@@ -17,6 +19,7 @@ pygpx has now been converted to v0.3.
 	
 API example:
 --------------
+
 ::
     from pygpx import GPX
     gpx = GPX("some_data.gpx")
