@@ -3,6 +3,13 @@ This library is designed for parsing and manipulating gpx files in python.
 This project originally started: http://www.benno.id.au/code/pygpx/ by Ben Leslie.
 
 I've picked up this project to update it to v1.1 of GPX so I can use this project with some of my personal work.
+Prerequisites
+-------------
+
+Required by pygpx:
+
+    * lxml
+
 
 pygpx has now been converted to v0.3.
 	* v0.3 now supports the GPX schema v1.1. All files using pygpx should validate against v1.1
