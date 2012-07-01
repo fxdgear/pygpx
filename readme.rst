@@ -1,8 +1,9 @@
-This library is designed for parsing and manipulating gpx files in python.
+This library is designed for parsing and manipulating gpx files in Python.
 
 This project originally started: http://www.benno.id.au/code/pygpx/ by Ben Leslie.
+Modified by Nick Lang to work with GPX v1.1: https://github.com/fxdgear/pygpx
 
-I've picked up this project to update it to v1.1 of GPX so I can use this project with some of my personal work.
+I am modifying it further. Changes are in CHANGE-LOG.
 
 Prerequisites
 -------------
