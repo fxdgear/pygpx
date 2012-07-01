@@ -1,3 +1,10 @@
+v0.3.1 
+
+Corrected formula for calculating distance.
+Using float instead of Decimal.
+Started writing unittests.
+Directory structure to work with -e flag in requirements.txt from Github repo.
+
 v0.1 - Originally created by Ben
 v0.2 - Picked up by Nick, made some minor changes to make with GPX v1.1
 v0.3 - Switch from using Minidom to ETree

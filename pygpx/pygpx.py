@@ -3,7 +3,6 @@ A module for parsing GPX files.
 """
 from lxml import etree
 import os
-from decimal import Decimal
 import math
 import datetime
 from dateutil.parser import parse
@@ -11,7 +10,7 @@ from dateutil.parser import parse
 
 def deg2rad(deg):
     """Convert degrees to radians"""
-    return deg / (180 / Decimal(math.pi))
+    return deg / (180 / math.pi)
 
 
 class GPXTrackPt:
@@ -20,15 +19,15 @@ class GPXTrackPt:
     def __init__(self, node, version):
         """Construct a trackpint given an XML node."""
         self.version = version
-        self.lat = Decimal(node.get("lat"))
-        self.lon = Decimal(node.get("lon"))
+        self.lat = float(node.get("lat"))
+        self.lon = float(node.get("lon"))
         self.elevation = None
         self.time = None
         for child in node:
             if child.tag == "{http://www.topografix.com/GPX/1/1}time":
                 self.time = parse(child.text)
             elif child.tag == "{http://www.topografix.com/GPX/1/1}ele":
-                self.elevation = Decimal(child.text)
+                self.elevation = float(child.text)
             elif child.tag == "{http://www.topografix.com/GPX/1/1}extensions":
                 pass
             else:
@@ -36,24 +35,24 @@ class GPXTrackPt:
 
     def distance(self, other):
         """Compute the distance from this point to another."""
-        r = Decimal(6378700)
         try:
-            dist = r * Decimal(
-                math.acos(
-                    round(
-                        Decimal(math.sin(deg2rad(self.lat))) *
-                        Decimal(math.sin(deg2rad(other.lat))) +
-                        Decimal(math.cos(deg2rad(self.lat))) *
-                        Decimal(math.cos(deg2rad(other.lat))) *
-                        Decimal(math.cos(deg2rad(self.lon - other.lon))),
-                        12)
-                )
-            )
+            # http://www.platoscave.net/blog/2009/oct/5/calculate-distance-latitude-longitude-python/
+
+            radius = 6378700.0 # meters
+
+            lat1, lon1 = self.lat, self.lon
+            lat2, lon2 = other.lat, other.lon
+
+            dlat = math.radians(lat2-lat1)
+            dlon = math.radians(lon2-lon1)
+            a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat1)) \
+                * math.cos(math.radians(lat2)) * math.sin(dlon/2) * math.sin(dlon/2)
+            c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+            d = radius * c
+
         except ValueError, e:
             raise ValueError(e)
-
-            print self.lat, self.lon
-        return Decimal(dist)
+        return d
 
     def duration(self, other):
         """Return the time difference between two nodes."""
@@ -66,8 +65,8 @@ class GPXTrackSeg:
     def __init__(self, node, version):
         self.version = version
         self.trkpts = []
-        self.elevation_gain = Decimal(0.0)
-        self.elevation_loss = Decimal(0.0)
+        self.elevation_gain = 0.0
+        self.elevation_loss = 0.0
         for child in node:
             if child.tag == "{http://www.topografix.com/GPX/1/1}trkpt":
                 self.trkpts.append(GPXTrackPt(child, self.version))
@@ -76,8 +75,8 @@ class GPXTrackSeg:
         self._get_elevation()
 
     def _get_elevation(self):
-        gain = Decimal(0.0)
-        loss = Decimal(0.0)
+        gain = 0.0
+        loss = 0.0
         last_pt = self.trkpts[0]
         last_elevation = last_pt.elevation
         for pt in self.trkpts[1:]:
@@ -90,7 +89,7 @@ class GPXTrackSeg:
 
     def distance(self):
         """Return the distance along the track segment."""
-        _length = Decimal(0.0)
+        _length = 0.0
         last_pt = self.trkpts[0]
         for pt in self.trkpts[1:]:
             _length += last_pt.distance(pt)
@@ -118,8 +117,8 @@ class GPXTrack:
                     self.trksegs.append(GPXTrackSeg(child, self.version))
             elif child.tag == "{http://www.topografix.com/GPX/1/1}number":
                 self.name = child.text
-            else:
-                raise ValueError("Can't handle node <%s>" % node.nodeName)
+            elif child.tag == "{http://www.topografix.com/GPX/1/1}desc":
+                self.desc = child.text
 
     def elevation_gain(self):
         return sum([trkseg.elevation_gain for trkseg in self.trksegs])
