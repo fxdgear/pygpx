@@ -81,9 +81,9 @@ class GPXTrackSeg:
         last_elevation = last_pt.elevation
         for pt in self.trkpts[1:]:
             if pt.elevation > last_elevation:
-                gain += pt.elevation
+                gain += pt.elevation - last_elevation
             else:
-                loss += pt.elevation
+                loss += last_elevation - pt.elevation
         self.elevation_gain = gain
         self.elevation_loss = loss
 
