@@ -84,6 +84,7 @@ class GPXTrackSeg:
                 gain += pt.elevation - last_elevation
             else:
                 loss += last_elevation - pt.elevation
+            last_elevation = pt.elevation
         self.elevation_gain = gain
         self.elevation_loss = loss
 
