@@ -75,18 +75,22 @@ class GPXTrackSeg:
         self._get_elevation()
 
     def _get_elevation(self):
-        gain = 0.0
-        loss = 0.0
-        last_pt = self.trkpts[0]
-        last_elevation = last_pt.elevation
-        for pt in self.trkpts[1:]:
-            if pt.elevation > last_elevation:
-                gain += pt.elevation - last_elevation
-            else:
-                loss += last_elevation - pt.elevation
-            last_elevation = pt.elevation
-        self.elevation_gain = gain
-        self.elevation_loss = loss
+        try:
+            gain = 0.0
+            loss = 0.0
+            last_pt = self.trkpts[0]
+            last_elevation = last_pt.elevation
+            for pt in self.trkpts[1:]:
+                if pt.elevation > last_elevation:
+                    gain += pt.elevation - last_elevation
+                else:
+                    loss += last_elevation - pt.elevation
+                last_elevation = pt.elevation
+            self.elevation_gain = gain
+            self.elevation_loss = loss
+        except AttributeError:
+            self.elevation_gain = None
+            self.elevation_loss = None
 
     def distance(self):
         """Return the distance along the track segment."""
