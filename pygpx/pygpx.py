@@ -126,10 +126,16 @@ class GPXTrack:
                 self.desc = child.text
 
     def elevation_gain(self):
-        return sum([trkseg.elevation_gain for trkseg in self.trksegs])
+        try:
+            return sum([trkseg.elevation_gain for trkseg in self.trksegs])
+        except TypeError:
+            return None
 
     def elevation_loss(self):
-        return sum([trkseg.elevation_loss for trkseg in self.trksegs])
+        try:
+            return sum([trkseg.elevation_loss for trkseg in self.trksegs])
+        except TypeError:
+            return None
 
     def distance(self):
         """Return the distance for this track."""
@@ -223,10 +229,16 @@ class GPX:
                 self.metadata = child
 
     def elevation_gain(self):
-        return sum([track.elevation_gain() for track in self.tracks])
+        try:
+            return sum([track.elevation_gain() for track in self.tracks])
+        except TypeError:
+            return None
 
     def elevation_loss(self):
-        return sum([track.elevation_loss() for track in self.tracks])
+        try:
+            return sum([track.elevation_loss() for track in self.tracks])
+        except TypeError:
+            return None
 
     def distance(self):
         """Return the distance for this gpx file."""
