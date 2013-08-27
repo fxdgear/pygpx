@@ -40,6 +40,7 @@ API example:
                 print trkpnt.lat
                 print trkpnt.lon
                 print trkpnt.elevation
+                print trkpnt.hr
                 print trkpnt.time
         
         print track.full_duration()
