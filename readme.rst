@@ -42,5 +42,5 @@ API example:
                 print trkpnt.elevation
                 print trkpnt.time
         
-        print track.full_duration
-        print track.distance
+        print track.full_duration()
+        print track.distance()
