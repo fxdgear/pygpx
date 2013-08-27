@@ -23,13 +23,18 @@ class GPXTrackPt:
         self.lon = float(node.get("lon"))
         self.elevation = None
         self.time = None
+        self.hr = None
         for child in node:
             if child.tag == "{http://www.topografix.com/GPX/1/1}time":
                 self.time = parse(child.text)
             elif child.tag == "{http://www.topografix.com/GPX/1/1}ele":
                 self.elevation = float(child.text)
             elif child.tag == "{http://www.topografix.com/GPX/1/1}extensions":
-                pass
+                for child1 in child:
+                	if child1.tag == "{http://www.garmin.com/xmlschemas/TrackPointExtension/v1}TrackPointExtension":
+                		for child2 in child1:
+                			if child2.tag == "{http://www.garmin.com/xmlschemas/TrackPointExtension/v1}hr":
+                				self.hr = int(child2.text)
             else:
                 raise ValueError("Can't handle node: '%s'" % child.tag)
 
